@@ -1,0 +1,34 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+# June 16 2026: GitHub forces JS actions onto Node 24; opt in early so a break
+# surfaces on our schedule (upload-artifact@v5 still declares node20).
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run format:check
+      - run: npm run build
+      - name: AMO lint (Firefox package)
+        run: npx --yes web-ext@8 lint --source-dir dist/firefox
+      - name: Upload store packages
+        uses: actions/upload-artifact@v5
+        with:
+          name: store-packages
+          path: dist/*.zip

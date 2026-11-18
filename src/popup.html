@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <title>Preencher NFS-e</title>
+    <style>
+      body {
+        font:
+          15px/1.5 system-ui,
+          sans-serif;
+        box-sizing: border-box;
+        width: 100%;
+        min-width: 240px;
+        margin: 0;
+        padding: 12px;
+        color: #222;
+      }
+      h1 {
+        font-size: 16px;
+        margin: 0 0 2px;
+        color: #1b6b3a;
+      }
+      label {
+        display: block;
+        margin: 8px 0 2px;
+        font-weight: 600;
+      }
+      input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      .row {
+        display: flex;
+        gap: 8px;
+      }
+      .row > div {
+        flex: 1;
+      }
+      .valor {
+        margin: 10px 0;
+        padding: 6px 8px;
+        background: #eef7f0;
+        border-radius: 4px;
+      }
+      button {
+        width: 100%;
+        margin-top: 10px;
+        padding: 8px;
+        border: 0;
+        border-radius: 4px;
+        background: #1b6b3a;
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      button:disabled {
+        background: #9bbfa8;
+      }
+      button.ghost {
+        background: #eee;
+        color: #444;
+      }
+      .linkbtn {
+        width: auto;
+        margin: 0;
+        padding: 0 6px;
+        background: none;
+        color: #1b6b3a;
+        font-size: 15px;
+        vertical-align: middle;
+      }
+      .linkbtn:disabled {
+        background: none;
+        color: #9bbfa8;
+      }
+      #status {
+        margin-top: 10px;
+        font-size: 14px;
+        white-space: pre-wrap;
+      }
+      .ptax {
+        font-size: 13px;
+        margin-top: 4px;
+        color: #666;
+        white-space: pre-wrap;
+        min-height: 14px;
+      }
+      .ok {
+        color: #1b6b3a;
+      }
+      .bad {
+        color: #b00020;
+      }
+      .hint {
+        color: #6b6b6b;
+        font-size: 13px;
+        margin-top: 8px;
+      }
+      /* Inline glyphs that mirror the portal's toolbar/row icons, so the steps point at
+         what the user actually clicks. Generic shapes only — never the NFSe brand logo. */
+      .pico {
+        width: 1.05em;
+        height: 1.05em;
+        vertical-align: -0.18em;
+        color: #1b6b3a;
+        margin: 0 1px;
+      }
+      #wrongSite p {
+        margin: 8px 0;
+      }
+      .daterow {
+        display: flex;
+        gap: 6px;
+        align-items: stretch;
+      }
+      .daterow > #competencia {
+        flex: 1;
+      }
+      .pickwrap {
+        position: relative;
+        flex: 0 0 auto;
+        display: inline-flex;
+      }
+      .pickbtn {
+        width: 34px;
+        margin: 0;
+        padding: 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background: #fff;
+        color: inherit;
+        font-size: 15px;
+        line-height: 1;
+        cursor: pointer;
+      }
+      .pickbtn:hover {
+        background: #f2f7f4;
+      }
+      .pickwrap input[type='date'] {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        pointer-events: none;
+        border: 0;
+        padding: 0;
+      }
+      .ident {
+        font-size: 14px;
+        font-weight: 600;
+        color: #1b6b3a;
+        margin: 0 0 10px;
+        padding: 5px 8px;
+        background: #eef7f0;
+        border-radius: 4px;
+      }
+      .ident .cnpj {
+        font-weight: 400;
+        color: #466;
+      }
+      .summary {
+        font-size: 14px;
+        background: #f5f7f6;
+        border-radius: 4px;
+        padding: 8px;
+        margin: 8px 0;
+      }
+      .summary div {
+        padding: 1px 0;
+      }
+      .summary .k {
+        color: #6b6b6b;
+      }
+      .profinfo {
+        font-size: 13px;
+        background: #eef7f0;
+        border-radius: 4px;
+        padding: 6px 8px;
+        margin: 0 0 10px;
+      }
+      #profilesBox {
+        margin-top: 14px;
+      }
+      #profilesBox .boxtitle {
+        font-size: 14px;
+        font-weight: 600;
+        color: #555;
+        margin-bottom: 4px;
+      }
+      .profrow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 6px;
+        padding: 4px 0;
+        border-bottom: 1px solid #eee;
+        font-size: 14px;
+      }
+      .profrow .cnpj {
+        color: #466;
+        font-size: 13px;
+      }
+      .profrow .logged {
+        color: #1b6b3a;
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .profactions {
+        display: flex;
+        gap: 8px;
+        margin-top: 8px;
+      }
+      .profactions button {
+        flex: 1;
+        margin: 0;
+      }
+      .delprof {
+        width: auto;
+        margin: 0;
+        padding: 2px 8px;
+        background: #fff;
+        color: #b00020;
+        border: 1px solid #e3b3bb;
+        border-radius: 4px;
+        font-size: 13px;
+        font-weight: 600;
+        flex: 0 0 auto;
+      }
+      .delprof:hover {
+        background: #fbeef0;
+      }
+      .warnbar:empty {
+        display: none;
+      }
+      .warnbar {
+        font-size: 14px;
+        background: #fff8e6;
+        border: 1px solid #e6c200;
+        color: #6b5400;
+        border-radius: 4px;
+        padding: 6px 8px;
+        margin: 0 0 10px;
+        white-space: pre-wrap;
+      }
+      .versionline {
+        margin-top: 14px;
+        font-size: 12px;
+        color: #aaa;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Preencher NFS-e</h1>
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <symbol id="ic-eye" viewBox="0 0 24 24">
+        <path
+          d="M1.5 12S5.5 5 12 5s10.5 7 10.5 7-4 7-10.5 7S1.5 12 1.5 12Z"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="2" />
+      </symbol>
+    </svg>
+    <div class="ident" id="identity" style="display: none"></div>
+    <div class="warnbar" id="portalWarn" role="status" aria-live="polite"></div>
+    <div class="profinfo" id="tomadorPicker" style="display: none">
+      <div class="boxtitle">Tomador</div>
+      <select id="tomadorSelect" style="width: 100%" aria-label="Tomador desta emissão"></select>
+      <div class="profactions">
+        <button id="loadXml" type="button" class="ghost">Importar XML</button>
+        <button id="tomadorRemove" type="button" class="ghost">Remover da lista</button>
+      </div>
+      <input id="xmlFile" type="file" accept=".xml,text/xml,application/xml" multiple hidden />
+      <div class="summary" id="xmlSummary" style="display: none"></div>
+      <div id="xmlMissing" class="hint bad" role="status" aria-live="polite"></div>
+      <div id="xmlActions" class="profactions" style="display: none">
+        <button id="useXml" type="button">Usar nesta emissão</button>
+        <button id="saveXml" type="button" class="ghost">Salvar como padrão</button>
+      </div>
+      <div id="xmlStatus" class="hint" role="status" aria-live="polite"></div>
+    </div>
+
+    <div id="needPerms" style="display: none">
+      <p>
+        A extensão precisa de <strong>permissão de acesso</strong> ao Emissor Nacional e ao Banco Central.
+      </p>
+      <button id="grantPerms" type="button">Conceder permissões</button>
+      <div id="permsStatus" class="hint bad" role="status" aria-live="polite"></div>
+    </div>
+
+    <div id="wrongSite" style="display: none">
+      <p>Funciona apenas no <strong>Emissor Nacional</strong>.</p>
+      <button id="openPortal" type="button">Abrir o Emissor Nacional</button>
+    </div>
+
+    <div id="needLogin" style="display: none">
+      <p>Faça <strong>login</strong> no Emissor Nacional para usar a extensão.</p>
+      <button id="goLogin" type="button">Ir para o login</button>
+    </div>
+
+    <div id="noContact" style="display: none">
+      <p>Não consegui <strong>ler a página</strong> do portal.</p>
+      <button type="button" class="reloadTab">Recarregar a página</button>
+      <button type="button" id="copyDiag" class="ghost">Copiar diagnóstico</button>
+      <p class="hint" id="copyDiagStatus"></p>
+    </div>
+
+    <div id="noIdentity" style="display: none">
+      <p>Não consegui identificar o <strong>CNPJ logado</strong>.</p>
+      <button type="button" class="reloadTab">Recarregar a página</button>
+    </div>
+
+    <div id="idle" style="display: none">
+      <p>Inicie a <strong>Emissão completa</strong> no portal.</p>
+      <div id="profilesBox" style="display: none">
+        <div class="boxtitle">Perfil emitente</div>
+        <div id="profilesList"></div>
+        <div class="profactions">
+          <button id="exportProfiles" type="button" class="ghost">Exportar</button>
+          <button id="importProfiles" type="button" class="ghost">Importar</button>
+          <input id="importFile" type="file" accept="application/json,.json" hidden />
+        </div>
+        <div id="profilesMsg" class="hint" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <div id="review" style="display: none">
+      <p>Revise e clique em <strong>Emitir NFS-e</strong> no final da página.</p>
+    </div>
+
+    <div id="noProfile" style="display: none">
+      <p>Este CNPJ ainda não tem <strong>perfil salvo</strong>.</p>
+      <p class="hint">
+        Na tela inicial, abra uma nota emitida (ícone
+        <svg class="pico" viewBox="0 0 24 24" role="img" aria-label="Visualizar"><use href="#ic-eye" /></svg>)
+        e clique em <strong>Salvar como padrão</strong>, ou carregue o XML da nota.
+      </p>
+    </div>
+
+    <div id="nota" style="display: none">
+      <p><strong>Nota carregada</strong> <span id="notaNum"></span></p>
+      <div class="summary" id="notaSummary"></div>
+      <div id="notaMissing" class="hint bad" role="status" aria-live="polite"></div>
+      <button id="useNota" type="button">Usar nesta emissão</button>
+      <button id="saveNota" type="button" class="ghost">Salvar como padrão</button>
+      <div id="notaStatus" class="hint" role="status" aria-live="polite"></div>
+    </div>
+
+    <div id="form" style="display: none">
+      <label for="competencia">Data de competência</label>
+      <div class="daterow">
+        <input
+          id="competencia"
+          inputmode="numeric"
+          placeholder="dd/mm/aaaa"
+          autocomplete="off"
+          maxlength="10"
+        />
+        <span class="pickwrap">
+          <button
+            id="pickDate"
+            type="button"
+            class="pickbtn"
+            title="Escolher no calendário"
+            aria-label="Escolher a data no calendário"
+          >
+            📅
+          </button>
+          <input id="competenciaPicker" type="date" tabindex="-1" aria-hidden="true" />
+        </span>
+      </div>
+
+      <div class="row">
+        <div>
+          <label for="usd">Valor (<span id="usdCur">US$</span>)</label>
+          <input id="usd" inputmode="decimal" placeholder="ex: 1.234,56" autocomplete="off" />
+        </div>
+        <div>
+          <label for="cambio"
+            >Câmbio (PTAX)
+            <button
+              id="refreshRate"
+              type="button"
+              class="linkbtn"
+              title="Buscar PTAX da data de competência"
+              aria-label="Buscar o câmbio PTAX da data de competência"
+            >
+              ↻
+            </button></label
+          >
+          <input id="cambio" inputmode="decimal" placeholder="ex: 5,1687" autocomplete="off" />
+        </div>
+      </div>
+      <div class="ptax" id="ptaxInfo" role="status" aria-live="polite"></div>
+
+      <div class="valor">Valor da nota: <strong id="valorBRL">R$ —</strong></div>
+
+      <button id="fill">Preencher página atual</button>
+      <div id="status" role="status" aria-live="polite"></div>
+    </div>
+
+    <details id="devTools" class="hint" hidden>
+      <summary>Ferramentas de mapeamento</summary>
+      <p class="hint">
+        Para suportar um tipo de nota novo: abra a página do assistente (Pessoas, Serviço ou Valores), clique
+        abaixo e cole o resultado. Não copia o que você digitou; números longos viram #.
+      </p>
+      <button type="button" id="dumpForm" class="ghost">Copiar mapa desta página</button>
+      <p class="hint" id="dumpFormStatus" role="status"></p>
+    </details>
+
+    <div class="versionline" id="versionLine"></div>
+
+    <script src="rate.js"></script>
+    <script src="xml-profile.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>
