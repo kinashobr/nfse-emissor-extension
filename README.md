@@ -1,4 +1,4 @@
-# NFS-e Nacional — Preenchimento automático (exportação e serviço convencional)
+# NFS-e Nacional — Preenchimento automático 
 
 Extensão de navegador (Manifest V3) que **preenche o rascunho da NFS-e** no
 [Emissor Nacional](https://www.nfse.gov.br/EmissorNacional) para emitentes **ME/EPP no
