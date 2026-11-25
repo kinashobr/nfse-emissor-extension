@@ -5,8 +5,6 @@ Extensão de navegador (Manifest V3) que **preenche o rascunho da NFS-e** no
 Simples Nacional**, em dois tipos de nota:
 
 - **Serviço convencional** (ISS devido, sem retenção) — valor em **R$**;
-- **Exportação de serviço** (ISS não incidente, LC 116/2003, art. 2º, I) — valor em
-  **US$**, convertido pela PTAX do Banco Central.
 
 A extensão preenche o assistente; **você confere e clica em Emitir — ela nunca emite
 sozinha.**
@@ -23,7 +21,7 @@ Como roda dentro do **seu navegador, já logado**, não esbarra nas defesas do p
 > [thgrcarvalho/nfse-emissor-extension](https://github.com/thgrcarvalho/nfse-emissor-extension)
 > (licença MIT), que originalmente só emitia exportação de serviço a partir de um perfil
 > fixo por cliente. O fluxo, o painel e o escopo mudaram bastante — este README descreve
-> o que o fork faz **hoje**.
+> o que o a extensão faz **hoje**.
 
 ## Como usar
 
