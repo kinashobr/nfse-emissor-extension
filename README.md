@@ -2,7 +2,7 @@
 
 Extensão de navegador (Manifest V3) que **preenche o rascunho da NFS-e** no
 [Emissor Nacional](https://www.nfse.gov.br/EmissorNacional) para emitentes **ME/EPP no
-Simples Nacional**, em dois tipos de nota:
+Simples Nacional**.
 
 A extensão preenche o assistente; **você confere e clica em Emitir — ela nunca emite
 sozinha.**
